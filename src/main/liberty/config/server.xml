@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="${project.name}">
+
+    <featureManager>
+        <feature>microProfile-5.0</feature>
+        <feature>beanValidation-3.0</feature>
+        <feature>restfulWS-3.0</feature>
+        <feature>jsonb-2.0</feature>
+        <feature>mpOpenAPI-3.0</feature>
+        <feature>jakartaee-9.1</feature>
+        <feature>cdi-3.0</feature>
+        <feature>ssl-1.0</feature>
+        <feature>mpConfig-3.0</feature>
+    </featureManager>
+
+    <basicRegistry id="basic" realm="BasicRealm">
+    </basicRegistry>
+    <variable name="server.port" value="9000"/>
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="${server.port}"
+                  host="*"
+    />
+
+    <webApplication location="app-books-1.0-SNAPSHOT.war" name="app-books" contextRoot="/"/>
+    <applicationManager autoExpand="true"/>
+    <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
+    <keyStore id="defaultKeyStore" location="public.jks" type="JKS" password="atbash" />
+
+</server>

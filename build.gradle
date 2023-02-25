@@ -1,0 +1,62 @@
+plugins {
+    id 'war'
+    id 'io.openliberty.tools.gradle.Liberty' version '3.5.2'
+}
+
+version '1.0-SNAPSHOT'
+group 'com.distribuida'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile 'jakarta.platform:jakarta.jakartaee-api:9.1.0'
+    providedCompile 'org.eclipse.microprofile:microprofile:5.0'
+    providedCompile 'javax.validation:validation-api:2.0.1.Final'
+
+    implementation 'org.mongodb:mongo-java-driver:3.12.10'
+
+    // Test dependencies
+    testImplementation 'org.jboss.resteasy:resteasy-client:6.0.0.Final'
+    testImplementation 'org.jboss.resteasy:resteasy-json-binding-provider:6.0.0.Final'
+    testImplementation 'org.glassfish:jakarta.json:2.0.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    testImplementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.osgi:osgi.annotation:8.1.0'
+}
+
+liberty {
+    server {
+        packageLiberty {
+            include = "runnable"
+        }
+    }
+}
+
+clean.dependsOn 'libertyStop'
+
+war {
+    archivesBaseName = "app-book"
+    archiveFileName = "${archivesBaseName}.war"
+}
+
+ext  {
+    liberty.server.var.'default.http.port' = '9080'
+    liberty.server.var.'project.name' = 'app-book'
+    liberty.server.var.'app.context.root' = '/'
+
+}
+
+test {
+    useJUnitPlatform()
+}
