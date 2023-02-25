@@ -21,7 +21,7 @@
                   host="*"
     />
 
-    <webApplication location="app-books-1.0-SNAPSHOT.war" name="app-books" contextRoot="/"/>
+    <webApplication location="app-books.war" name="app-books" contextRoot="/"/>
     <applicationManager autoExpand="true"/>
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
     <keyStore id="defaultKeyStore" location="public.jks" type="JKS" password="atbash" />

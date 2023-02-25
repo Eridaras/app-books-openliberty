@@ -1,6 +1,8 @@
 plugins {
     id 'war'
     id 'io.openliberty.tools.gradle.Liberty' version '3.5.2'
+    id 'application'
+    id 'java'
 }
 
 version '1.0-SNAPSHOT'
@@ -59,4 +61,10 @@ ext  {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.book.BookApplication'
+    }
 }
