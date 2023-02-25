@@ -1,0 +1,5 @@
+FROM open-liberty
+
+COPY build/libs/app-book.war /config/dropins/
+
+ENV MONGO_DB_URL=mongodb://mongo:27017/distribuida
