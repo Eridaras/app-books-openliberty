@@ -44,7 +44,7 @@ services:
       - "traefik.http.routers.books.rule=PathPrefix(`/app1`)"
       - "traefik.http.middlewares.books.stripprefix.prefixes=/app1"
       - "traefik.http.routers.books.middlewares=books"
- 
+
     
 
 
