@@ -53,7 +53,7 @@ war {
 }
 
 ext  {
-    liberty.server.var.'default.http.port' = '9080'
+    liberty.server.var.'default.http.port' = '9000'
     liberty.server.var.'project.name' = 'app-book'
     liberty.server.var.'app.context.root' = '/'
 
