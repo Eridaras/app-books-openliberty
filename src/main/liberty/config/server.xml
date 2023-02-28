@@ -3,27 +3,25 @@
 
     <featureManager>
         <feature>microProfile-5.0</feature>
-        <feature>beanValidation-3.0</feature>
-        <feature>restfulWS-3.0</feature>
-        <feature>jsonb-2.0</feature>
-        <feature>mpOpenAPI-3.0</feature>
-        <feature>jakartaee-9.1</feature>
-        <feature>cdi-3.0</feature>
-        <feature>ssl-1.0</feature>
-        <feature>mpConfig-3.0</feature>
+        <feature>persistence-3.0</feature>
     </featureManager>
 
-    <basicRegistry id="basic" realm="BasicRealm">
-    </basicRegistry>
-    <variable name="server.port" value="9000"/>
-    <httpEndpoint id="defaultHttpEndpoint"
-                  httpPort="${server.port}"
-                  host="*"
-    />
+    <variable name="puerto" value="7080"/>
 
-    <webApplication location="app-books.war" name="app-books" contextRoot="/"/>
-    <applicationManager autoExpand="true"/>
-    <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
+    <httpEndpoint id="defaultHttpEndpoint" host="*"
+                  httpPort="${puerto}"
+                  httpsPort="9443"/>
+
+    <webApplication location="${project.name}.war" contextRoot="${app.context.root}">
+        <classloader apiTypeVisibility="+third-party" />
+    </webApplication>
+    <mpMetrics authentication="false"/>
+
+    <!-- This is the keystore that will be used by SSL and by JWT. -->
     <keyStore id="defaultKeyStore" location="public.jks" type="JKS" password="atbash" />
+    <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
+
+    <!-- The MP JWT configuration that injects the caller's JWT into a ResourceScoped bean for inspection. -->
+    <mpJwt id="jwtUserConsumer" keyName="theKeyId" audiences="targetService" issuer="${jwt.issuer}"/>
 
 </server>

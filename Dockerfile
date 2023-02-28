@@ -1,8 +1,8 @@
-FROM eclipse-temurin:17.0.5_8-jre-alpine
+FROM openjdk:17-jdk-slim
+
 RUN mkdir /app
 WORKDIR /app
-COPY build/libs/app-book-1.0-SNAPSHOT.jar ./app-book-1.0-SNAPSHOT.jar
-EXPOSE 9080
-ENV MONGO_DB_URL=mongodb://mongo:27017/distribuida
-CMD ["java","-jar","app-book-1.0-SNAPSHOT.jar"]
 
+COPY build/libs/*.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]

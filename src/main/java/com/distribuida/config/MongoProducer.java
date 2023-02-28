@@ -21,33 +21,23 @@ import com.mongodb.client.MongoDatabase;
 public class MongoProducer {
 
     @Inject
-    @ConfigProperty(name = "mongo.hostname", defaultValue = "localhost")
-    String hostname;
+    @ConfigProperty(name = "mongo.dbhost")
+    String dbHost;
 
     @Inject
-    @ConfigProperty(name = "mongo.port", defaultValue = "27017")
+    @ConfigProperty(name = "mongo.port")
     int port;
 
     @Inject
-    @ConfigProperty(name = "mongo.dbname", defaultValue = "book")
+    @ConfigProperty(name = "mongo.dbname")
     String dbName;
-
-
-    @Produces
-    public MongoClient createMongo(){
-        return new MongoClient(new ServerAddress(hostname, port));
-    }
 
     @Produces
     @ApplicationScoped
-    public MongoCollection<Document> createDB(MongoClient cliente) {
-        MongoDatabase db = cliente.getDatabase(dbName);
-        MongoCollection<Document> book = db.getCollection("book");
-        return book;
-    }
-
-    public void close(
-            @Disposes MongoClient toClose) {
-        toClose.close();
+    public MongoCollection<Document> mongoDatabase() {
+        MongoClient mongo = new MongoClient(dbHost, port);
+        MongoDatabase database = mongo.getDatabase(dbName);
+        MongoCollection<Document> collection = database.getCollection("books");
+        return collection;
     }
 }

@@ -1,5 +1,10 @@
 version: '3'
 services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
   proxy:
     image: traefik:v2.9.6
     command: --api.insecure=true --providers.docker
@@ -10,29 +15,21 @@ services:
       - 80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  mongo:
-    image: mongo:4.4.10
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-  book-service:
-    image: jsalvador/app-books:1.0.0
-    expose:
-      - 9000
+
+  books-service:
+    image: jaimesalvador/app-books:1.0.0
+    environment:
+      MONGO_DBNAME: books
+      MONGO_DBHOST: localhost
+      MONGO_PORT: 27017
+      SERVER_PORT: 7080
+    depends_on:
+      - mongo
     deploy:
       replicas: 1
-    environment:
-      - MONGODB_URI=mongodb://mongo/library
-      - SERVER_PORT=8080
+    expose:
+      - 7080
     labels:
       - "traefik.http.routers.books.rule=PathPrefix(`/app1`)"
       - "traefik.http.middlewares.books.stripprefix.prefixes=/app1"
       - "traefik.http.routers.books.middlewares=books"
-    depends_on:
-      - mongo
-volumes:
-  mongodb_data:
-    driver: local
-
-
